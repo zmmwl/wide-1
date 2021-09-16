@@ -28,6 +28,7 @@ import (
 	"strings"
 	"syscall"
 	"time"
+	"net/url"
 
 	"github.com/88250/gulu"
 	"github.com/88250/wide/conf"
@@ -160,6 +161,9 @@ func main() {
 	server := conf.Wide.Server
 	if server == ""{
 		server = "127.0.0.1:7070"
+	}else{
+		u, _ := url.Parse(server)
+		server = u.Host
 	}
 	err := http.ListenAndServe(server, nil)
 	if err != nil {
