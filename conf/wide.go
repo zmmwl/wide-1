@@ -94,6 +94,7 @@ func Load(confPath, confData, confServer, confLogLevel string, confSiteStatCode 
 	} else {
 		Docker = true
 	}
+	Docker = false
 }
 
 func initUsers() {
