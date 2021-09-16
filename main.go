@@ -157,8 +157,11 @@ func main() {
 	http.HandleFunc("/playground/autocomplete", handlerWrapper(playground.AutocompleteHandler))
 
 	logger.Infof("Wide is running [%s]", conf.Wide.Server)
-
-	err := http.ListenAndServe("127.0.0.1:7070", nil)
+	server := conf.Wide.Server
+	if server == ""{
+		server = "127.0.0.1:7070"
+	}
+	err := http.ListenAndServe(server, nil)
 	if err != nil {
 		logger.Error(err)
 	}
