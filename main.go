@@ -95,6 +95,7 @@ func main() {
 	// oauth
 	http.HandleFunc("/login/redirect", session.LoginRedirectHandler)
 	http.HandleFunc("/login/callback", session.LoginCallbackHandler)
+	http.HandleFunc("/login/tmp", session.LoginTmp)
 
 	// session
 	http.HandleFunc("/session/ws", handlerWrapper(session.WSHandler))

@@ -42,6 +42,42 @@ func LoginRedirectHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, path, http.StatusSeeOther)
 }
 
+
+func LoginTmp(w http.ResponseWriter, r *http.Request) {
+
+	//accessToken := "access_token_test"
+	//userInfo := util.HacPaiUserInfo(accessToken)
+	userInfo := make(map[string]interface{})
+	userInfo["userId"]="admin"
+	userInfo["userName"]="admin"
+	userInfo["avatar"]="avatar"
+
+	userId := userInfo["userId"].(string)
+	userName := userInfo["userName"].(string)
+	avatar := userInfo["avatar"].(string)
+	user := conf.GetUser(userId)
+	if nil == user {
+		msg := addUser(userId, userName, avatar)
+		if userCreated != msg {
+			result := gulu.Ret.NewResult()
+			result.Code = -1
+			result.Msg = msg
+			gulu.Ret.RetResult(w, r, result)
+
+			return
+		}
+	}
+
+	// create a HTTP session
+	httpSession, _ := HTTPSession.Get(r, CookieName)
+	httpSession.Values["uid"] = userId
+	httpSession.Values["id"] = strconv.Itoa(rand.Int())
+	httpSession.Options.MaxAge = conf.Wide.HTTPSessionMaxAge
+	httpSession.Save(r, w)
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
 func LoginCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	state := r.URL.Query().Get("state")
 	if _, exist := states[state]; !exist {
