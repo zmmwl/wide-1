@@ -76,6 +76,8 @@ func RunHandler(w http.ResponseWriter, r *http.Request, channel map[string]*util
 		curDir := filepath.Dir(filePath)
 		cmd.Dir = curDir
 	}
+	logger.Infof("cmd filePath is: %s",filePath)
+	logger.Infof("curDir filePath is: %s",cmd.Dir)
 
 	outBuf := &bytes.Buffer{}
 	errBuf := &bytes.Buffer{}
